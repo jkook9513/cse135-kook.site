@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jonathan Kook</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <style>
+        section {
+            margin: 18px 0;
+            padding: 14px;
+            border: 1px solid rgba(127, 127, 127, 0.35);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>Jonathan Kook</h1>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>About me</h2>
+            <p>
+                Hi! I'm Jonathan. I'm a computer engineering major at UCSD, and I'm interested in building Full-stack
+                projects. I like watching basketball and football in my free time!
+            </p>
+        </section>
+
+        <section>
+            <p>
+                This button updates the page with the current time using javascript.
+            </p>
+
+            <button type="button" id="timeBtn">Show time</button>
+            <p class="small">Current time: <span id="timeValue">none</span></p>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            Back to the team homepage: <a href="/">cse135-kook.site</a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("timeBtn");
+            const out = document.getElementById("timeValue");
+
+            btn.addEventListener("click", () => {
+                out.textContent = new Date().toLocaleString();
+            });
+        });
+    </script>
+</body>
+
+</html>
