@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="https://cdn.logr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <script>window.LogRocket && window.LogRocket.init('9ulkxg/cse135-kooksite');</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJQBM10FEN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-YJQBM10FEN');
+  </script>
+  <meta charset="utf-8">
+  <title>PHP Session Test</title>
+</head>
+
+<body>
+  <h1>Session Test (PHP)</h1>
+
+  <form method="POST" action="/cgi-bin/php/state-php.php">
+    <label>
+      What is your name?
+      <input type="text" name="name" required>
+    </label>
+    <br><br>
+    <button type="submit">Test Sessioning</button>
+  </form>
+
+  <p><a href="/index.html">Home</a></p>
+</body>
+
+</html>
