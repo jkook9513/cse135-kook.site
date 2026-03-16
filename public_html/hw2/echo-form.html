@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script src="https://cdn.logr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <script>window.LogRocket && window.LogRocket.init('9ulkxg/cse135-kooksite');</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJQBM10FEN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-YJQBM10FEN');
+  </script>
+  <script>
+    window._cq = window._cq || [];
+    _cq.push(['init', {
+      endpoint: 'https://collector.cse135-kook.site/log',
+      enableVitals: true,
+      enableErrors: true,
+      sampleRate: 1.0,
+      debug: false,
+      respectConsent: false,
+      detectBots: false
+    }]);
+  </script>
+  <script async src="https://collector.cse135-kook.site/collector.js"></script>
+  <meta charset="utf-8" />
+  <title>Echo Form</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      margin: 24px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+    }
+
+    select,
+    input {
+      padding: 6px;
+      width: 320px;
+      max-width: 100%;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 6px 12px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Echo Form</h1>
+
+  <!-- Reduced mode without JS: submits GET urlencoded to PHP by default -->
+  <noscript>
+    <p><b>JavaScript is off.</b> Reduced mode: GET + urlencoded → PHP echo endpoint.</p>
+  </noscript>
+
+  <form id="echoForm" method="GET" action="/cgi-bin/php/echo-php.php">
+    <label>Language</label>
+    <select id="lang">
+      <option value="php">php</option>
+      <option value="python">python</option>
+      <option value="c">c</option>
+    </select>
+
+    <label>Method</label>
+    <select id="method">
+      <option>GET</option>
+      <option>POST</option>
+      <option>PUT</option>
+      <option>DELETE</option>
+    </select>
+
+    <label>Encoding</label>
+    <select id="enc">
+      <option value="form">application/x-www-form-urlencoded</option>
+      <option value="json">application/json</option>
+    </select>
+
+    <label>Field 1 (key=value)</label>
+    <input id="f1" name="f1" placeholder="Hello" />
+
+    <label>Field 2 (key=value)</label>
+    <input id="f2" name="f2" placeholder="World" />
+
+    <button type="submit">Submit</button>
+  </form>
+  <pre id="out"></pre>
+
+  <script>
+    (() => {
+      const endpoints = {
+        php: "/cgi-bin/php/echo-php.php",
+        python: "/cgi-bin/python/echo-python.py",
+        c: "/cgi-bin/c/echo-c"
+      };
+
+      const form = document.getElementById("echoForm");
+      const out = document.getElementById("out") || { textContent: "" };
+      const lang = document.getElementById("lang");
+      const method = document.getElementById("method");
+      const enc = document.getElementById("enc");
+      const f1 = document.getElementById("f1");
+      const f2 = document.getElementById("f2");
+
+      function kvToObj(s) {
+        const i = s.indexOf("=");
+        if (i === -1) return null;
+        const k = s.slice(0, i).trim();
+        const v = s.slice(i + 1).trim();
+        if (!k) return null;
+        return [k, v];
+      }
+
+      function buildPairs() {
+        const pairs = [];
+        [f1.value, f2.value].forEach(v => {
+          const kv = kvToObj(v);
+          if (kv) pairs.push(kv);
+        });
+        return pairs;
+      }
+
+      function updateNoJsFallback() {
+        // Keep action/method reasonable in case JS logic fails:
+        form.action = endpoints[lang.value];
+        form.method = "GET";
+      }
+
+      updateNoJsFallback();
+      lang.addEventListener("change", updateNoJsFallback);
+
+      form.addEventListener("submit", async (e) => {
+        // JS-enabled: we override submit to support PUT/DELETE + JSON
+        e.preventDefault();
+
+        const url = endpoints[lang.value];
+        const m = method.value;
+        const encoding = enc.value;
+        const pairs = buildPairs();
+
+        let qs = new URLSearchParams();
+        for (const [k, v] of pairs) qs.append(k, v);
+
+        let fetchUrl = url;
+        let fetchOpts = { method: m, headers: {} };
+
+        if (m === "GET") {
+          fetchUrl = url + (qs.toString() ? ("?" + qs.toString()) : "");
+        } else {
+          if (encoding === "json") {
+            const obj = {};
+            for (const [k, v] of pairs) obj[k] = v;
+            fetchOpts.headers["Content-Type"] = "application/json";
+            fetchOpts.body = JSON.stringify(obj);
+          } else {
+            fetchOpts.headers["Content-Type"] = "application/x-www-form-urlencoded";
+            fetchOpts.body = qs.toString();
+          }
+        }
+
+        out.textContent = "Loading...";
+        try {
+          const res = await fetch(fetchUrl, fetchOpts);
+          const text = await res.text();
+          out.textContent = text;
+        } catch (err) {
+          out.textContent = "Error: " + err;
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
