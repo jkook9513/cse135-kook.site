@@ -25,9 +25,10 @@ https://reporting.cse135-kook.site
 https://cse135-kook.site/
 https://collector.cse135-kook.site/
 https://test.cse135-kook.site/catalog.html
-## Repo
 
+## Repo
 https://github.com/jkook9513/cse135-kook.site
+https://github.com/jkook9513/cse135-kook-final
 ---
 
 ## Features
@@ -128,8 +129,15 @@ Requirements:
 
 ## AI Use
 
-I used AI for various purposes for this project. Since I was working alone, it was useful for tedious work such as frontend design and bug fixes. It was very useful throughout the course of this project
+I used AI for various purposes for this project. Since I was working alone, it was useful for tedious work such as frontend design and bug fixes. It was also very useful for documentation like the README files. Overall, it saved me a lot of time and energy, and it was very useful throughout the course of this project
 
 ## Future Features
 
 Given more time, I would like to expand on the data I am currently collection. I would also like to work on the frontend design more and have the navigation flow be more smooth. I would also like to work on a real authentication system with sign-ups.
+
+## Extra Credit Documentation
+
+- Frontend design of pages (login, dashboard, report, etc..) matches
+- Password information is hashed before storing in database to ensure better security
+- Added system status portion on reporting site
+- Styled analysis reports (with charts, tables, etc) available for pdf export
